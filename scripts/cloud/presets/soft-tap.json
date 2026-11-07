@@ -1,0 +1,8 @@
+{
+  "press_scale_percent": 96,
+  "press_duration_ms": 70,
+  "release_duration_ms": 100,
+  "sound_peak_limit": 0.12,
+  "sound_duration_ms": 55,
+  "frequencies_hz": { "tap": 1100, "space": 720, "delete": 480 }
+}

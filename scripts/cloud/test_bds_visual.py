@@ -6,6 +6,7 @@ import unittest
 from zipfile import ZipFile
 from PIL import Image
 from bds_visual import build, inspect
+from original_base import write_base
 
 
 def png_bytes(color, size=(24, 16)):
@@ -44,6 +45,20 @@ class VisualBuildTests(unittest.TestCase):
 
     def run_build(self):
         return build(self.template, self.plan, self.root / 'out')
+
+    def test_original_base_to_image_replacement_pipeline(self):
+        write_base(self.root / 'own-base')
+        template = self.root / 'own-base/original-base-prototype-09.bds'
+        (self.root / 'new.png').write_bytes(png_bytes('skyblue', (1080, 624)))
+        self.replacements = [{'target': 'res/panel.png', 'image': 'new.png'}]
+        self.write_plan()
+        report = build(template, self.plan, self.root / 'own-result')
+        self.assertEqual(len(report['changed_images']), 1)
+        self.assertEqual(report['unchanged_entry_count'], 39)
+        with ZipFile(template) as before, ZipFile(self.root / 'own-result/skin.bds') as after:
+            for name in before.namelist():
+                if name != 'res/panel.png':
+                    self.assertEqual(before.read(name), after.read(name), name)
 
     def test_exact_replacement_preserves_every_other_byte_and_order(self):
         report = self.run_build()

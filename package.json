@@ -16,7 +16,11 @@
     "test:e2e": "for f in scripts/test-*.mjs; do echo \"== $f\"; node \"$f\" || exit 1; done",
     "test:ui": "node scripts/ui-snapshot.mjs compare",
     "test:cloud": "python scripts/cloud/test_bds_visual.py",
-    "skin:demo": "python scripts/cloud/demo.py"
+    "skin:demo": "python scripts/cloud/demo.py",
+    "skin:base": "python scripts/cloud/original_base.py",
+    "test:base": "python scripts/cloud/test_original_base.py && node scripts/cloud/check-original-base.mjs",
+    "skin:full": "node scripts/cloud/build-full-base.mjs",
+    "test:effects": "node --test scripts/cloud/check-effects.test.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.0",
