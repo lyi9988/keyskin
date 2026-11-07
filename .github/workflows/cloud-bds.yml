@@ -25,3 +25,4 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: node scripts/cloud/check-original-base.mjs
       - run: npm run test:effects
+      - run: npm run test:mist

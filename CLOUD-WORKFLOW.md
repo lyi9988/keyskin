@@ -1,5 +1,7 @@
 # 云端图片 → BDS 最小工作流
 
+完整可视示例：[雾紫轻触10](MIST-LILAC.md)，一键 `npm run skin:mist`。
+
 需要不依赖供体的原创底包时，参见 [原创底包生成器](ORIGINAL-BASE.md)。它与下述图片替换器是两个独立入口。
 
 不用桌面、不用 Android SDK、不用浏览器保存框，也不需要 AI API key。

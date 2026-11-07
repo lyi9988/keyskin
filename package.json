@@ -20,7 +20,10 @@
     "skin:base": "python scripts/cloud/original_base.py",
     "test:base": "python scripts/cloud/test_original_base.py && node scripts/cloud/check-original-base.mjs",
     "skin:full": "node scripts/cloud/build-full-base.mjs",
-    "test:effects": "node --test scripts/cloud/check-effects.test.mjs"
+    "test:effects": "node --test scripts/cloud/check-effects.test.mjs",
+    "skin:mist": "node scripts/cloud/build-mist-lilac.mjs",
+    "test:mist": "python scripts/cloud/test_mist_lilac.py && node --test scripts/cloud/check-mist-lilac.test.mjs",
+    "skin:preview": "node scripts/cloud/render-demo.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.11.0",
@@ -45,6 +48,7 @@
   },
   "devDependencies": {
     "@cloudbase/cli": "^3.8.1",
+    "@napi-rs/canvas": "1.1.0",
     "@tauri-apps/cli": "^2.8.0",
     "playwright": "^1.56.1",
     "postcss": "^8.5.24",

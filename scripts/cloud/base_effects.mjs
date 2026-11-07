@@ -107,7 +107,12 @@ export async function compileEffects(baseBytes, preset) {
   }
   // Existing visual styles are unchanged; NM/HL colors remain distinct for both key kinds.
   assert.deepEqual(fields(files.get('res/default.css')).filter(e => !/^STYLE\d+$/.test(e.section) || Number(e.section.slice(5)) < first).filter(e => e.key !== 'STYLE_NUM'), fields(original['res/default.css']).filter(e => e.key !== 'STYLE_NUM'))
-  for (const id of [2, 3]) assert.notEqual(finalStyles.get(`STYLE${id}`, 'NM_COLOR'), finalStyles.get(`STYLE${id}`, 'HL_COLOR'))
+  for (const id of [2, 3]) {
+    const normal = finalStyles.get(`STYLE${id}`, 'NM_IMG') ?? finalStyles.get(`STYLE${id}`, 'NM_COLOR')
+    const pressed = finalStyles.get(`STYLE${id}`, 'HL_IMG') ?? finalStyles.get(`STYLE${id}`, 'HL_COLOR')
+    assert.ok(normal && pressed, 'Both key visual states must exist')
+    assert.notEqual(normal, pressed)
+  }
   const animations = parseLegacyAnimationFile(strFromU8(files.get('res/anim.ini')))
   assert.equal(animations.entries.length, 2)
   assert.ok(animations.entries.every(e => e.kind === 'basic' && e.type === 4))
@@ -118,7 +123,7 @@ export async function compileEffects(baseBytes, preset) {
   return { bytes, masters, report: { status: 'FULL_EFFECTS_PROTOTYPE_DEVICE_NOT_TESTED', sha256: hash(bytes), base_sha256: hash(baseBytes), node_version: process.version,
     resource_sha256: Object.fromEntries([...files].map(([name, data]) => [name, hash(data)])), bound_keys: boundKeys,
     animation_count: 2, audio, preset,
-    checks: ['Original input actions, SHOW, LIST and geometry preserved', 'Normal/pressed colors distinct', 'Press/release animation chains resolve', 'Three original synthesized sounds encode/decode as Ogg Vorbis', 'All per-key sound paths resolve', 'ZIP round-trip'],
+    checks: ['Original input actions, SHOW, LIST and geometry preserved', 'Normal/pressed visuals distinct', 'Press/release animation chains resolve', 'Three original synthesized sounds encode/decode as Ogg Vorbis', 'All per-key sound paths resolve', 'ZIP round-trip'],
     not_verified: ['Actual Android typing', 'Native press/release timing and interruption', 'IME sound switch and volume behavior', 'Actual native visual rendering'],
     unsupported: ['Particle and GIF compilation', 'Arbitrary animation graphs', 'Per-key custom image atlases', 'Custom sound import UI'] } }
 }
