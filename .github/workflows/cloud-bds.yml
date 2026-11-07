@@ -26,3 +26,10 @@ jobs:
       - run: node scripts/cloud/check-original-base.mjs
       - run: npm run test:effects
       - run: npm run test:mist
+      - name: Check native star and toolbar package
+        run: |
+          node scripts/cloud/build-mist-lilac.mjs --output artifacts/ci-mist
+          python scripts/cloud/star_pop.py artifacts/ci-mist/mist-lilac.bds artifacts/ci-star --prominent
+          node scripts/cloud/check-star-pop.mjs artifacts/ci-mist/mist-lilac.bds artifacts/ci-star/mist-star-12.bds
+          python scripts/cloud/add_native_toolbar.py artifacts/ci-star/mist-star-12.bds artifacts/ci-toolbar
+          node scripts/cloud/check-toolbar.mjs artifacts/ci-star/mist-star-12.bds artifacts/ci-toolbar/mist-star-toolbar-13.bds

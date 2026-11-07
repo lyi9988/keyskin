@@ -19,7 +19,7 @@ if (!process.env.KEYSKIN_RENDER_CHILD) {
   const target = resolve(process.argv[3] || join(resolve(process.argv[2] || 'artifacts/mist-lilac/mist-lilac.bds'), '..', 'keyskin-preview'))
   if (existsSync(target)) throw new Error(`Output directory already exists: ${target}; choose a fresh directory`)
   const reports = []
-  for (const layout of ['py_26', 'py_9']) for (const pressed of ['false', 'true']) {
+  for (const layout of (process.env.KEYSKIN_CAND ? ['cand'] : ['py_26', 'py_9'])) for (const pressed of ['false', 'true']) {
     const stdout = execFileSync(process.execPath, [fileURLToPath(import.meta.url), ...process.argv.slice(2)], {
       env: { ...process.env, KEYSKIN_RENDER_CHILD: '1', KEYSKIN_LAYOUT: layout, KEYSKIN_PRESSED: pressed }, encoding: 'utf8',
     })
@@ -79,12 +79,13 @@ for (const theme of ['light', 'dark']) {
   const doc = (path) => IniDocument.parse(archive.getText(path))
   const gen = doc(prefix + 'gen.ini')
   const styles = doc(`${theme}/skin/res/default.css`)
-  for (const layout of ['py_26', 'py_9']) {
+  for (const layout of (process.env.KEYSKIN_CAND ? ['cand'] : ['py_26', 'py_9'])) {
     if (process.env.KEYSKIN_LAYOUT && process.env.KEYSKIN_LAYOUT !== layout) continue
-    const ini = doc(prefix + layout + '.ini')
+    const ini = doc(prefix + layout + (layout === 'cand' ? '.cnd' : '.ini'))
     const config = resolvePanelConfig(ini, gen, styles)
+    if (layout === 'cand') { const rect = gen.get('CAND', 'VIEW_RECT').split(',').map(Number); config.width = rect[2]; config.height = rect[3]; config.styleID = ini.get('CAND', 'BACK_STYLE') }
     const c = canvas(config.width, config.height)
-    const preview = new OfflinePreview(c, () => {}, () => {})
+    const preview = new OfflinePreview(c, () => {}, () => {}, layout === 'cand')
     preview.mode = 'preview'
     preview.theme = theme
     preview.resolver = new AtlasResolver(archive, theme, 'port')
