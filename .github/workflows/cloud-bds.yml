@@ -35,3 +35,6 @@ jobs:
           node scripts/cloud/check-toolbar.mjs artifacts/ci-star/mist-star-12.bds artifacts/ci-toolbar/mist-star-toolbar-13.bds
           python scripts/cloud/add_clear_key.py artifacts/ci-toolbar/mist-star-toolbar-13.bds artifacts/ci-clear
           node scripts/cloud/check-clear-key.mjs artifacts/ci-toolbar/mist-star-toolbar-13.bds artifacts/ci-clear/mist-star-clear-14.bds
+          python scripts/cloud/glass_visuals.py artifacts/ci-clear/mist-star-clear-14.bds artifacts/ci-glass-visuals
+          python scripts/cloud/glass_effects.py artifacts/ci-glass-visuals/glass-visuals.bds artifacts/ci-glass
+          node scripts/cloud/check-glass.mjs artifacts/ci-glass-visuals/glass-visuals.bds artifacts/ci-glass/glass-ripple-15.bds
