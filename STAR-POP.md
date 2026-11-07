@@ -27,3 +27,12 @@ KEYSKIN_CAND=1 node scripts/cloud/render-demo.mjs artifacts/star13/mist-star-too
 The original star becomes 1.75× larger, yellow with a purple outline, and lasts 720 ms. The user reported seeing the v11 effect; v13 visibility and repeated typing are not yet device-verified.
 
 The native candidate toolbar adds F31 menu, F14 client-managed functions and F8 hide for the idle state (PERSIST=1), switching to candidate expansion F9 while composing (PERSIST=2). Candidate padding reserves the expansion button. The package includes original bitmap-index artwork for emoji, keyboard, microphone, search, editing, clipboard and hide, plus logo.ini VERSION=1. The actual functions, number and order in F14 are controlled by the user's Baidu settings; the preview shows the available atlas icons and does not guarantee all will be pinned on the phone. Keyboard layouts and actions remain byte-identical. gen.ini gains only LOGO, not different candidate geometry. The reader checks F14 geometry, visibility switching and required icon indexes against the upstream native model.
+
+## Nine-key preedit clear button (v14)
+
+```
+python scripts/cloud/add_clear_key.py artifacts/star13/mist-star-toolbar-13.bds artifacts/star14
+node scripts/cloud/check-clear-key.mjs artifacts/star13/mist-star-toolbar-13.bds artifacts/star14/mist-star-clear-14.bds
+```
+
+Adds a visible 清空 key in the unused bottom-left cell below the punctuation list in Chinese nine-key portrait and landscape. It invokes F40 (clear input code), not F48 (clear text field), per src/actions.ts. No existing key moves or action changes; the existing delete-left F40 gesture remains. The new key has the delete sound but intentionally no star animation. The generator asserts no overlap with existing keys or punctuation cells. All other files except name and appended label style remain byte-identical. The phone's F40 behavior still needs a test with existing committed text plus active preedit; this is not an implementation of select-all/delete.

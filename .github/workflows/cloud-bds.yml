@@ -33,3 +33,5 @@ jobs:
           node scripts/cloud/check-star-pop.mjs artifacts/ci-mist/mist-lilac.bds artifacts/ci-star/mist-star-12.bds
           python scripts/cloud/add_native_toolbar.py artifacts/ci-star/mist-star-12.bds artifacts/ci-toolbar
           node scripts/cloud/check-toolbar.mjs artifacts/ci-star/mist-star-12.bds artifacts/ci-toolbar/mist-star-toolbar-13.bds
+          python scripts/cloud/add_clear_key.py artifacts/ci-toolbar/mist-star-toolbar-13.bds artifacts/ci-clear
+          node scripts/cloud/check-clear-key.mjs artifacts/ci-toolbar/mist-star-toolbar-13.bds artifacts/ci-clear/mist-star-clear-14.bds
